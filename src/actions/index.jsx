@@ -35,3 +35,26 @@ export const updateUser = (updatedUser) => {
     updatedUser
   };
 };
+
+export const fetchPostListRequest = () => {
+  console.log("JE SUIS DANS FetchPostListREQUEST")
+  return {
+    type: 'FETCH_POSTLIST_REQUEST',
+  }
+}
+
+export const fetchPostListSuccess = (currentPost) => {
+  console.log("JE SUIS DANS FetchPostListSUCCESS")
+  return {
+    type: 'FETCH_POSTLIST_SUCCESS',
+    currentPost
+  };
+};
+
+export const fetchPostListFailure = (error) => {
+  console.log("JE SUIS DANS FetchPostListFAILURE")
+  return {
+    type: 'FETCH_POSTLIST_FAILURE',
+    error
+  };
+};
