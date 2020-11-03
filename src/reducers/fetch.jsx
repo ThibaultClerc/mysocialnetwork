@@ -28,6 +28,11 @@ const fetchReducer = (state = initialState, action) => {
         ...state,
         currentUser: []
       }
+    case 'UPDATE_USER' :
+      return {
+        ...state,
+        currentUser: action.updatedUser
+      }
     default: 
       return state;
   }

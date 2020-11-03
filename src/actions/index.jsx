@@ -28,6 +28,14 @@ export const logOutUser = () => {
   };
 };
 
+export const updateUser = (updatedUser) => {
+  console.log("JE SUIS DANS updateUser")
+  return {
+    type: 'UPDATE_USER',
+    updatedUser
+  };
+};
+
 export const fetchPostListRequest = () => {
   console.log("JE SUIS DANS FetchPostListREQUEST")
   return {
