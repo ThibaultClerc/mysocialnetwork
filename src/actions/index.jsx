@@ -27,3 +27,11 @@ export const logOutUser = () => {
     type: 'LOGOUT_USER'
   };
 };
+
+export const updateUser = (updatedUser) => {
+  console.log("JE SUIS DANS updateUser")
+  return {
+    type: 'UPDATE_USER',
+    updatedUser
+  };
+};

@@ -1,11 +1,96 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { fetchUserRequest, fetchUserSuccess, fetchUserFailure } from '../../actions';
+import Cookies from 'js-cookie';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from "react-router-dom";
+
 
 const User = () => {
+  const currentUser = useSelector(state => state.currentUser.currentUser)
+  const [username, setUsername] = useState(currentUser.user.username)
+  const [description, setDescription] = useState(currentUser.user.description || "")
+  const [displayedUser, setDisplayedUser] = useState([])
+  const [posts, setPosts] = useState([])
+  let { userID } = useParams()
+
+  const fetchUser = () => {
+      fetch(`https://my-pasteque-space.herokuapp.com/users/${userID}`, {
+        "method": "GET",
+        "headers": {
+          'Authorization': `Bearer ${currentUser.jwt}`, 
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.statusCode === 400) {
+          console.log(response.message);
+        } else {
+          console.log("je suis al")
+          setDisplayedUser(response)
+        }
+      })
+    }
+
+  const fetchPosts = () => {
+    fetch(`https://my-pasteque-space.herokuapp.com/posts?user.id=${userID}`, {
+      "method": "GET",
+      "headers": {
+        'Authorization': `Bearer ${currentUser.jwt}`, 
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      if (response.statusCode === 400) {
+        console.log(response.message);
+      } else {
+        console.log("je suis al")
+        setPosts(response)
+      }
+    })
+  }
+
+  useEffect(() => {
+    fetchUser()
+    fetchPosts()
+  }, [])
+
+  const handleUsernameSubmit = () => {
+  }
+
+  const handleDescriptionSubmit = () => {
+  }
+
   return (
-    <div>
-      User
-    </div>
-  )
+    <>
+    <h1>USER PROFILE</h1>
+    <h1>{displayedUser.username}</h1>
+    {!displayedUser.description ? <p>Pas de description</p> : <p>{displayedUser.description}</p>}
+    <form onSubmit={handleUsernameSubmit}>
+      <label>
+        Modifier mon username
+        <input
+          type="text"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+        />
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+    <form onSubmit={handleDescriptionSubmit}>
+      <label>
+        Modifier ma description
+        <input
+          type="text"
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+        />
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+    </>
+  );
 }
 
 export default User

@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux';
         <Route {...rest} render={props => (
             !isLogin() ?
                 <Component {...props} />
-            : <Redirect to="/login" />
+            : <Redirect to="/" />
         )} />
     );
 };
