@@ -21,7 +21,7 @@ const Login = () => {
   const fetchUser = () => {
     return (dispatch) => {
       dispatch(fetchUserRequest());
-      fetch("http://localhost:1337/auth/local", {
+      fetch("https://my-pasteque-space.herokuapp.com/auth/local", {
         "method": "POST",
         "headers": {
           "Content-Type": "application/json"
