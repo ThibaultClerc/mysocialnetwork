@@ -1,23 +1,23 @@
 const initialState = {
   loading: false,
-  postList: null,
+  postList: [],
   error: ''
 }
 
 const fetchPostListReducer = (state = initialState, action) => {
   switch(action.type) {
-    case 'FETCH_POST_REQUEST' :
+    case 'FETCH_POSTLIST_REQUEST' :
       return {
         ...state,
         loading: true
       }
-    case 'FETCH_POST_SUCCESS' :
+    case 'FETCH_POSTLIST_SUCCESS' :
       return {
         ...state,
         loading: false,
-        postList: action.postList
+        postList: action.currentPostList
       }
-    case 'FETCH_POST_FAILURE' :
+    case 'FETCH_POSTLIST_FAILURE' :
       return {
         ...state,
         loading: false,

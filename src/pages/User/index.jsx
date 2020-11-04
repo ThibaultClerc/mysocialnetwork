@@ -45,7 +45,6 @@ const User = () => {
       if (response.statusCode === 400) {
         console.log(response.message);
       } else {
-        console.log("je suis al")
         setPosts(response)
       }
     })

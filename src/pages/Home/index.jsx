@@ -5,7 +5,6 @@ import PostList from '../../components/Postlist'
 const Home = () => {
 
   const currentUser = useSelector(state => state.currentUser.currentUser)
-  console.log(currentUser)
 
   return (
     

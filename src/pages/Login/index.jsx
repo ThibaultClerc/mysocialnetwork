@@ -9,8 +9,8 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
-      e.preventDefault();
-      dispatch(fetchUser())
+    e.preventDefault();
+    dispatch(fetchUser())
   }
 
   const data = {
