@@ -15,12 +15,10 @@ const User = () => {
   let { userID } = useParams()
 
   const dataUsername = {
-    // id : userId,
     username: username
   }
 
   const dataUserDescription = {
-    // id : userId,
     description: description
   }
 
@@ -121,6 +119,9 @@ const User = () => {
     <h1>USER PROFILE</h1>
     <h1>{displayedUser.username}</h1>
     {!displayedUser.description ? <p>Pas de description</p> : <p>{displayedUser.description}</p>}
+    <ul>      
+      {posts.map(post => <li>{post.text}</li>)}
+    </ul>
     <form onSubmit={handleUsernameSubmit}>
       <label>
         Modifier mon username
