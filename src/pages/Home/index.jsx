@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { fetchPostListFailure } from '../../actions';
 import PostList from '../../components/Postlist'
+import { Redirect } from 'react-router-dom'
+
 
 const Home = () => {
   const [post, setPost] = useState("")
+  const [redirection, setRedirection]= useState(false)
+
   const currentUser = useSelector(state => state.currentUser.currentUser)
 
   const handleSubmit = (e) => {
@@ -38,12 +42,17 @@ const Home = () => {
         console.log(response.message);
       } else {
         console.log(response);
+        setRedirection(true)
+        console.log("Hello")
       }
     })
   }
 
   console.log(currentUser.id)
 
+  if (redirection){
+    return  <Redirect to='/users/me'/>
+  }
   return (
     <>
     {!Array.isArray(currentUser) &&
