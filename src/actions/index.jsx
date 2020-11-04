@@ -50,3 +50,10 @@ export const fetchPostListFailure = (error) => {
     error
   };
 };
+
+// export const fetchPostCreated = (newPost) => {
+//   return {
+//     type: 'FETCH_POST_CREATED',
+//     newPost
+//   };
+// };

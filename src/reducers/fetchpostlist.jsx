@@ -23,6 +23,12 @@ const fetchPostListReducer = (state = initialState, action) => {
         loading: false,
         error: action.error
       }
+    // case 'FETCH_POST_CREATED' :
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     postList: [...postList, action.newPost]
+    //   }
     default: 
       return state;
   }
