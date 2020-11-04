@@ -8,10 +8,59 @@ import { useParams } from "react-router-dom";
 const User = () => {
   const currentUser = useSelector(state => state.currentUser.currentUser)
   const [username, setUsername] = useState(currentUser.user.username)
+  const [userId, setUserId] = useState(currentUser.user.id)
   const [description, setDescription] = useState(currentUser.user.description || "")
   const [displayedUser, setDisplayedUser] = useState([])
   const [posts, setPosts] = useState([])
   let { userID } = useParams()
+
+  const dataUsername = {
+    // id : userId,
+    username: username
+  }
+
+  const dataUserDescription = {
+    // id : userId,
+    description: description
+  }
+
+  const fetchNewUsername = () => {
+      fetch(`https://my-pasteque-space.herokuapp.com/users/${userId}`, {
+        "method": "PUT",
+        "headers": {
+          'Authorization': `Bearer ${currentUser.jwt}`, 
+          "Content-Type": "application/json"
+        },
+        "body": JSON.stringify(dataUsername)
+      })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.statusCode === 400) {
+          console.log(response.message);
+        } else {
+          console.log(response);
+        }
+      })
+  }
+
+  const fetchDescription= () => {
+      fetch(`https://my-pasteque-space.herokuapp.com/users/${userId}`, {
+        "method": "PUT",
+        "headers": {
+          'Authorization': `Bearer ${currentUser.jwt}`, 
+          "Content-Type": "application/json"
+        },
+        "body": JSON.stringify(dataUserDescription)
+      })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.statusCode === 400) {
+          console.log(response.message);
+        } else {
+          console.log(response);
+        }
+      })
+  }
 
   const fetchUser = () => {
       fetch(`https://my-pasteque-space.herokuapp.com/users/${userID}`, {
@@ -55,11 +104,17 @@ const User = () => {
     fetchPosts()
   }, [])
 
-  const handleUsernameSubmit = () => {
+  const handleUsernameSubmit = (e) => {
+    e.preventDefault()
+    fetchNewUsername()
   }
 
-  const handleDescriptionSubmit = () => {
+  const handleDescriptionSubmit = (e) => {
+    e.preventDefault()
+    fetchDescription()
   }
+
+  console.log(currentUser.jwt)
 
   return (
     <>
