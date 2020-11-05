@@ -40,12 +40,13 @@ const Post = ({text, user, likes, userID, postID}) => {
   
 
   return (
-    <li>
-        <h4>{text}</h4>
+    <div>
+        <p>{text}</p>
         <Link to={`/users/${userID}`}>{user}</Link>
         <h6>{likes} likes</h6>
-        <button onClick={() => handleClick()}>Like</button>
-    </li>
+        <button onClick={() => handleClick()} className ="btn btn-primary">Like</button>
+    </div>
+
   )
 }
 

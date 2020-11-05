@@ -6,16 +6,12 @@ import Post from '../Post'
 
 function PostList() {
   const currentUser = useSelector(state => state.currentUser.currentUser)
-  const [postList, setPostList] = useState("");
   const [username, setUsername] = useState(currentUser.user.username)
+  const [userId, setUserId] = useState(currentUser.user.id)
+
 
   const dispatch = useDispatch();
   const posts = useSelector(state => state.postList.postList)
-
-  const dataUsername = {
-    // id : userId,
-    username: username
-  }
 
   console.log(username)
 
@@ -71,17 +67,18 @@ function PostList() {
     }
   }
   
+  console.log(userId)
 
   return (
-    <ul>
+      <div className="row">
       {posts.map(post =>
-      <div>
+      <div className = "card col-3 mt-3 ml-1 ml-1 text-center">
       <Post key={post.id} postID={post.id} text={post.text} user={post.user.username} likes={likesHandler(post.like)} userID={post.user.id}/>
-      <button onClick={()=>fetchDeletePost(post.id)}>Delete</button>
+      {userId === post.user.id ? <button onClick={()=>fetchDeletePost(post.id)}className ="btn btn-primary">Delete</button> : ""}
+      
       </div>
       )}
-      {/* {posts.user && posts.map(post => <Post key={post.id} postID={post.id} text={post.text} user={post.user.username} likes={likesHandler(post.like)} userID={post.user.id}/>)} */}
-    </ul>
+      </div>
   )
 }
 

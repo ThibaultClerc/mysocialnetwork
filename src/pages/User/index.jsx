@@ -80,7 +80,7 @@ const User = () => {
     }
 
   const fetchPosts = () => {
-    fetch(`https://my-pasteque-space.herokuapp.com/posts?user.id=${userID}`, {
+    fetch(`https://my-pasteque-space.herokuapp.com/posts?user.id=${userID === "me" ? `${userId}` : `${userID}`}`, {
       "method": "GET",
       "headers": {
         'Authorization': `Bearer ${currentUser.jwt}`, 
