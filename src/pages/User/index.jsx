@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { fetchUserRequest, fetchUserSuccess, fetchUserFailure } from '../../actions';
 import Cookies from 'js-cookie';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 
 
@@ -22,11 +21,54 @@ const User = () => {
     description: description
   }
 
+  const fetchUser = () => {
+    fetch(`https://my-pasteque-space.herokuapp.com/users/${userID}`, {
+      "method": "GET",
+      "headers": {
+        'Authorization': `Bearer ${Cookies.get('token')}`, 
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      if (response.statusCode === 400) {
+        console.log(response.message);
+      } else {
+        console.log("je suis al")
+        setDisplayedUser(response)
+      }
+    })
+  }
+
+  const fetchPosts = () => {
+    let currentID = ""
+    if (userID === "me") {
+      currentID = userId
+    } else {
+      currentID = userID
+    }
+    fetch(`https://my-pasteque-space.herokuapp.com/posts?user.id=${currentID}`, {
+      "method": "GET",
+      "headers": {
+        'Authorization': `Bearer ${Cookies.get('token')}`, 
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      if (response.statusCode === 400) {
+        console.log(response.message);
+      } else {
+        setPosts(response)
+      }
+    })
+  }
+
   const fetchNewUsername = () => {
       fetch(`https://my-pasteque-space.herokuapp.com/users/${userId}`, {
         "method": "PUT",
         "headers": {
-          'Authorization': `Bearer ${currentUser.jwt}`, 
+          'Authorization': `Bearer ${Cookies.get('token')}`, 
           "Content-Type": "application/json"
         },
         "body": JSON.stringify(dataUsername)
@@ -45,7 +87,7 @@ const User = () => {
       fetch(`https://my-pasteque-space.herokuapp.com/users/${userId}`, {
         "method": "PUT",
         "headers": {
-          'Authorization': `Bearer ${currentUser.jwt}`, 
+          'Authorization': `Bearer ${Cookies.get('token')}`, 
           "Content-Type": "application/json"
         },
         "body": JSON.stringify(dataUserDescription)
@@ -58,43 +100,6 @@ const User = () => {
           console.log(response);
         }
       })
-  }
-
-  const fetchUser = () => {
-      fetch(`https://my-pasteque-space.herokuapp.com/users/${userID}`, {
-        "method": "GET",
-        "headers": {
-          'Authorization': `Bearer ${currentUser.jwt}`, 
-          'Content-Type': 'application/json'
-        }
-      })
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.statusCode === 400) {
-          console.log(response.message);
-        } else {
-          console.log("je suis al")
-          setDisplayedUser(response)
-        }
-      })
-    }
-
-  const fetchPosts = () => {
-    fetch(`https://my-pasteque-space.herokuapp.com/posts?user.id=${userID === "me" ? `${userId}` : `${userID}`}`, {
-      "method": "GET",
-      "headers": {
-        'Authorization': `Bearer ${currentUser.jwt}`, 
-        'Content-Type': 'application/json'
-      }
-    })
-    .then((response) => response.json())
-    .then((response) => {
-      if (response.statusCode === 400) {
-        console.log(response.message);
-      } else {
-        setPosts(response)
-      }
-    })
   }
 
   useEffect(() => {
@@ -122,28 +127,32 @@ const User = () => {
     <ul>      
       {posts.map(post => <li>{post.text}</li>)}
     </ul>
-    <form onSubmit={handleUsernameSubmit}>
-      <label>
-        Modifier mon username
-        <input
-          type="text"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
-    <form onSubmit={handleDescriptionSubmit}>
-      <label>
-        Modifier ma description
-        <input
-          type="text"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-        />
-      </label>
-      <input type="submit" value="Submit" />
-    </form>
+    {userID === 'me' && 
+    <div>
+      <form onSubmit={handleUsernameSubmit}>
+        <label>
+          Modifier mon username
+          <input
+            type="text"
+            value={currentUser.username}
+            onChange={e => setUsername(e.target.value)}
+          />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+      <form onSubmit={handleDescriptionSubmit}>
+        <label>
+          Modifier ma description
+          <input
+            type="text"
+            value={currentUser.description}
+            onChange={e => setDescription(e.target.value)}
+          />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    }
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
 
 const Post = ({text, user, likes, userID, postID}) => {
   const [isLiked, setIsLiked] = useState(false)
@@ -18,7 +19,7 @@ const Post = ({text, user, likes, userID, postID}) => {
     fetch(`https://my-pasteque-space.herokuapp.com/posts/${postID}`, {
       "method": "PUT",
       "headers": {
-        'Authorization': `Bearer ${currentUser.jwt}`, 
+        'Authorization': `Bearer ${Cookies.get('token')}`, 
         "Content-Type": "application/json"
       },
       "body": JSON.stringify(data)
@@ -64,21 +65,29 @@ const Post = ({text, user, likes, userID, postID}) => {
     fetchLike()
   }
 
-  function Update(id,e){
+  const handleUserID = () => {
+    if (userID === currentUser.user.id) {
+      return "me"
+    } else {
+      return userID
+    }
+    console.log("j'étais là")
+  }
+
+  const update = (id, e) => {
     e.preventDefault();
     fetchPostUpdate(id)
   }
-
-
+  
   return (
-    <div>
-        <p>{text}</p>
-        <Link to={`/users/${userID}`}>{user}</Link>
+    <li>
+        <h4>{text}</h4>
+        <Link to={`/users/${handleUserID()}`}>{user}</Link>
         <h6>{likes} likes</h6>
         <button onClick={() => handleClick()} className ="btn btn-primary">Like</button>
 
       {userId === userID ?       
-      <form onSubmit={function(event){Update(postID, event)}}>
+      <form onSubmit={(e) => update(postID, e)}>
       <label>
         Modifier mon post
         <input
@@ -90,7 +99,7 @@ const Post = ({text, user, likes, userID, postID}) => {
       <input type="submit" value="Submit" />
       </form> : ""}
 
-    </div>
+    </li>
 
   )
 }

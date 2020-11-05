@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-import { fetchPostListFailure } from '../../actions';
-import PostList from '../../components/Postlist'
-import { Redirect } from 'react-router-dom'
-
+import PostList from '../../components/Postlist';
+import { Redirect } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Home = () => {
   const [post, setPost] = useState("")
@@ -14,6 +13,7 @@ const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     fetchPost(data)
+    return <Redirect to="/" />
   }
 
   const data = () => {
@@ -31,7 +31,7 @@ const Home = () => {
     fetch("https://my-pasteque-space.herokuapp.com/posts", {
       "method": "POST",
       "headers": {
-        'Authorization': `Bearer ${currentUser.jwt}`, 
+        'Authorization': `Bearer ${Cookies.get('token')}`, 
         "Content-Type": "application/json"
       },
       "body": JSON.stringify(data())
@@ -42,17 +42,13 @@ const Home = () => {
         console.log(response.message);
       } else {
         console.log(response);
-        setRedirection(true)
-        console.log("Hello")
       }
     })
-  }
+  } 
 
-  console.log(currentUser.id)
-
-  if (redirection){
-    return  <Redirect to='/users/me'/>
-  }
+  // if (redirection){
+  //   return  <Redirect to='/'/>
+  // }
   return (
     <>
     {!Array.isArray(currentUser) &&
