@@ -80,7 +80,7 @@ const Post = ({text, user, likes, userID, postID}) => {
   }
   
   return (
-    <li>
+    <div>
         <h4>{text}</h4>
         <Link to={`/users/${handleUserID()}`}>{user}</Link>
         <h6>{likes} likes</h6>
@@ -88,18 +88,16 @@ const Post = ({text, user, likes, userID, postID}) => {
 
       {userId === userID ?       
       <form onSubmit={(e) => update(postID, e)}>
-      <label>
-        Modifier mon post
+        <h5>Modifier :</h5>
         <input
           type="text"
           value={postUpdate}
           onChange={e => setPostUpdate(e.target.value)}
         />
-      </label>
-      <input type="submit" value="Submit" />
+      <input type="submit" value="Submit" className="mt-3"/>
       </form> : ""}
 
-    </li>
+    </div>
 
   )
 }

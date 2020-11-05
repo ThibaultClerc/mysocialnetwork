@@ -105,7 +105,7 @@ const User = () => {
   useEffect(() => {
     fetchUser()
     fetchPosts()
-  }, [])
+  }, [userID])
 
   const handleUsernameSubmit = (e) => {
     e.preventDefault()
@@ -120,40 +120,36 @@ const User = () => {
   console.log(currentUser.jwt)
 
   return (
-    <>
-    <h1>USER PROFILE</h1>
+    <div className="text-center pt-5 mt-5">
     <h1>{displayedUser.username}</h1>
     {!displayedUser.description ? <p>Pas de description</p> : <p>{displayedUser.description}</p>}
-    <ul>      
-      {posts.map(post => <li>{post.text}</li>)}
-    </ul>
+    <div className="row mx-auto card-columns justify-content-center">      
+      {posts.map(post => <div className = "card col-3 mt-3 ml-1 ml-1 p-4">{post.text}</div>)}
+    </div>
     {userID === 'me' && 
     <div>
       <form onSubmit={handleUsernameSubmit}>
-        <label>
-          Modifier mon username
-          <input
-            type="text"
-            value={currentUser.username}
-            onChange={e => setUsername(e.target.value)}
+        <h3 className="mb-3">Modifier mon username</h3>
+        <input
+          type="text"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+          className="mb-4"
           />
-        </label>
         <input type="submit" value="Submit" />
       </form>
       <form onSubmit={handleDescriptionSubmit}>
-        <label>
-          Modifier ma description
+      <h3 className="mb-3">Modifier ma description</h3>
           <input
             type="text"
-            value={currentUser.description}
+            value={description}
             onChange={e => setDescription(e.target.value)}
           />
-        </label>
         <input type="submit" value="Submit" />
       </form>
     </div>
     }
-    </>
+    </div>
   );
 }
 

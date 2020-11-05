@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import PostList from '../../components/Postlist';
 import { Redirect } from 'react-router-dom';
@@ -6,14 +6,12 @@ import Cookies from 'js-cookie';
 
 const Home = () => {
   const [post, setPost] = useState("")
-  const [redirection, setRedirection]= useState(false)
 
   const currentUser = useSelector(state => state.currentUser.currentUser)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     fetchPost(data)
-    return <Redirect to="/" />
   }
 
   const data = () => {
@@ -52,11 +50,11 @@ const Home = () => {
   return (
     <>
     {!Array.isArray(currentUser) &&
-      <div>
+      <div className="mt-5 pt-5 text-center mx-auto">
         <form onSubmit={handleSubmit}>
           <label>
             Ecrire un post:
-            <input
+            <textarea
               type="text"
               value={post}
               onChange={e => setPost(e.target.value)}

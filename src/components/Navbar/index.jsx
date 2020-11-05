@@ -18,11 +18,17 @@ export default function Navbar() {
     <nav className="bg-dark sticky-top py-1">
       <div className="container d-flex flex-column flex-md-row justify-content-center">
         <NavLink className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/">Home</NavLink>
-        <NavLink className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/register">Register</NavLink>
-        <NavLink className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/login">Login</NavLink>
-        <NavLink className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/users/me">Profile</NavLink>
+        {Array.isArray(currentUser) &&
+        <>
+          <NavLink className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/register">Register</NavLink>
+          <NavLink className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/login">Login</NavLink>
+        </>
+        }
         {!Array.isArray(currentUser) &&
-          <NavLink onClick={() => handleClick()} className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/">Logout</NavLink>
+          <>
+            <NavLink className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/users/me">Profile</NavLink>
+            <NavLink onClick={() => handleClick()} className="py-2 d-none d-md-inline-block mr-5 pr-5 text-white text-decoration-none font-weight-bold" to="/">Logout</NavLink>
+          </>
         }
       </div>
     </nav>

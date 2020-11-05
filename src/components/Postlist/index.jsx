@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { fetchPostListRequest, fetchPostListSuccess, fetchPostListFailure } from '../../actions';
 import { useDispatch, useSelector } from 'react-redux';
-import Post from '../Post'
+import Post from '../Post';
+import Cookies from 'js-cookie'
 
 
 function PostList() {
   const currentUser = useSelector(state => state.currentUser.currentUser)
   const [username, setUsername] = useState(currentUser.user.username)
   const [userId, setUserId] = useState(currentUser.user.id)
-
-
-
   const dispatch = useDispatch();
   const posts = useSelector(state => state.postList.postList)
-
-  console.log(username)
 
   const fetchPostList = () => {
     return (dispatch) => {
@@ -22,7 +18,7 @@ function PostList() {
       fetch("https://my-pasteque-space.herokuapp.com/posts?_sort=created_at:desc", {
         "method": "GET",
         "headers": {
-          'Authorization': `Bearer ${currentUser.jwt}`, 
+          'Authorization': `Bearer ${Cookies.get('token')}`, 
           'Content-Type': 'application/json'
         }
       })
@@ -42,7 +38,7 @@ function PostList() {
     fetch(`https://my-pasteque-space.herokuapp.com/posts/${postid}`, {
       "method": "DELETE",
       "headers": {
-        'Authorization': `Bearer ${currentUser.jwt}`, 
+        'Authorization': `Bearer ${Cookies.get('token')}`, 
         "Content-Type": "application/json"
       },
     })
@@ -68,17 +64,18 @@ function PostList() {
     }
   }
   
-  console.log(userId)
+  console.log(posts)
 
   return (
-      <div className="row">
-      {posts.map(post =>
-      <div className = "card col-3 mt-3 ml-1 ml-1 text-center">
-      <Post key={post.id} postID={post.id} text={post.text} user={post.user.username} likes={likesHandler(post.like)} userID={post.user.id}/>
-      {userId === post.user.id ? <button onClick={()=>fetchDeletePost(post.id)}className ="btn btn-primary">Delete</button> : ""}
-      
-      </div>
-      )}
+      <div className="row mx-auto card-columns justify-content-center">
+      {posts.map(post => {
+        if (post.user !== null) {
+          return ( <div className = "card col-3 mt-3 ml-1 ml-1 p-3">
+            <Post key={post.id} postID={post.id} text={post.text} user={post.user.username} likes={likesHandler(post.like)} userID={post.user.id} lastLiker={post.liking}/>
+            {userId === post.user.id ? <button onClick={()=>fetchDeletePost(post.id)}className ="btn btn-primary">Delete</button> : ""}
+          </div> )
+        }
+      })}
       </div>
   )
 }
