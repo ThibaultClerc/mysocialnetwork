@@ -10,6 +10,7 @@ function PostList() {
   const [userId, setUserId] = useState(currentUser.user.id)
 
 
+
   const dispatch = useDispatch();
   const posts = useSelector(state => state.postList.postList)
 
